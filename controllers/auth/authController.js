@@ -28,13 +28,14 @@ const loginTeacherPost = async (req, res) => {
     if (!isValid) {
       return res.status(401).send({ errorMessage: 'Unauthorized' });
     }
-    const token = jwt.sign({ _id: user._id, username: user.username }, process.env.SECRET, { expiresIn: '3 days' });
+    const token = jwt.sign({ _id: user._id, username: user.username, Role: 'teacher' }, process.env.SECRET, { expiresIn: '3 days' });
     // res.locals is used only to save credentials for server side
     // rendering, like if we are using ejs then
     // username can be shown on nav bar
     res.locals.user = {
       _id: user._id,
-      username: user.username
+      username: user.username,
+      Role: 'teacher'
     };
     // cookie age 3 days, can't access through the dom access only transferred via http protocol
     res.cookie('accessToken', token, { maxAge: 1000 * 60 * 60 * 72, httpOnly: true });
@@ -76,12 +77,13 @@ const signupTeacherPost = async (req, res) => {
   //  username can be shown on nav bar
   res.locals.user = {
     _id: user._id,
-    username: user.username
+    username: user.username,
+    Role: 'teacher'
   };
   user
     .save()
     .then(() => {
-      const token = jwt.sign({ _id: user._id, username: user.username, role: '' }, process.env.SECRET, { expiresIn: '3 days' });
+      const token = jwt.sign({ _id: user._id, username: user.username, Role: 'teacher' }, process.env.SECRET, { expiresIn: '3 days' });
       res.cookie('accessToken', token, { maxAge: 1000 * 60 * 60 * 72, httpOnly: true });
       res.status(201).send({ result: 'Success' });
     })
@@ -113,12 +115,13 @@ const loginStudentPost = async (req, res) => {
     if (!isValid) {
       return res.status(401).send({ errorMessage: 'Unauthorized' });
     }
-    const token = jwt.sign({ _id: user._id, username: user.username }, process.env.SECRET, { expiresIn: '3 days' });
+    const token = jwt.sign({ _id: user._id, username: user.username, Role: 'student' }, process.env.SECRET, { expiresIn: '3 days' });
     // res.locals is used only to save credentials for server side
     // rendering, like if we are using ejs then
     // username can be shown on nav bar
     res.locals.user = {
-      username: user.username
+      username: user.username,
+      Role: 'student'
     };
     // cookie age 3 days, can't access through the dom access only transferred via http protocol
     res.cookie('accessToken', token, { maxAge: 1000 * 60 * 60 * 72, httpOnly: true });
@@ -160,12 +163,13 @@ const signupStudentPost = async (req, res) => {
   // username can be shown on nav bar
   res.locals.user = {
     _id: user._id,
-    username: user.username
+    username: user.username,
+    Role: 'student'
   };
   user
     .save()
     .then(() => {
-      const token = jwt.sign({ _id: user._id, username: user.username }, process.env.SECRET, { expiresIn: '3 days' });
+      const token = jwt.sign({ _id: user._id, username: user.username, Role: 'student' }, process.env.SECRET, { expiresIn: '3 days' });
       res.cookie('accessToken', token, { maxAge: 1000 * 60 * 60 * 72, httpOnly: true });
       res.status(201).send({ result: 'Success' });
     })

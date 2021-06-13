@@ -21,10 +21,6 @@ const classSchema = new Schema({
     required: true,
     ref: 'user'
   },
-  studentsID: {
-    type: [String],
-    default: [],
-  },
   startTime: {
     type: Date,
     required: true

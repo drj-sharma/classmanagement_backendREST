@@ -1,7 +1,11 @@
+const mongoose = require('mongoose');
 const ClassModel = require('../../db_models/classModel');
 const { classAddValidator } = require('../../validations/classAddValidator');
 const { classUpdateValidator } = require('../../validations/classUpdateValidator');
 
+/**
+ * @param {*} req class body
+ */
 const addClass = async (req, res) => {
   const { error } = classAddValidator(req.body);
   if (error) {
@@ -10,18 +14,24 @@ const addClass = async (req, res) => {
   }
   const classDTO = { ...req.body };
   const myClass = new ClassModel();
+  myClass._id = mongoose.Types.ObjectId();
   myClass.className = classDTO.className;
   myClass.description = classDTO.description;
   myClass.teacherID = classDTO.teacherID;
-  myClass.studentsID = classDTO.studentsID;
   myClass.startTime = classDTO.startTime;
   myClass.endTime = classDTO.endTime;
   myClass
     .save()
-    .then(() => res.status(201).send({ result: 'Success' }))
+    .then(() => {
+      res.status(201).send({ result: 'Success' });
+    })
     .catch(() => res.status(500).send({ errorMessage: 'Unexpected server error!' }));
 };
 
+/**
+ * @param {*} req {id} in params
+ * @returns class data
+ */
 const getClass = async (req, res) => {
   try {
     const { id } = req.params;
@@ -35,6 +45,11 @@ const getClass = async (req, res) => {
   }
 };
 
+/**
+ * @param {*} req class data
+ * @param {*} res
+ * @returns
+ */
 const editClass = async (req, res) => {
   const data = req.body;
   const { error } = classUpdateValidator(req.body);
@@ -53,6 +68,10 @@ const editClass = async (req, res) => {
   }
 };
 
+/**
+ * @param {*} req {id} in params
+ * @param {*} res statusCode 200/403
+ */
 const deleteClass = async (req, res) => {
   try {
     const { id } = req.params;

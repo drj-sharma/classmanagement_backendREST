@@ -18,11 +18,15 @@ app.use(express.urlencoded({
 }));
 
 const authRoutes = require('./routes/auth/authRoutes');
+const studentRoutes = require('./routes/student/studentRoutes');
 const classRoutes = require('./routes/teacher/classRoutes');
+const homeRoutes = require('./routes/home/HomeRoutes');
 
 // db connect and listen for requests
 (() => {
   dbConnect(app);
 })();
+app.use('/home', homeRoutes);
 app.use('/auth', authRoutes);
 app.use('/class', classRoutes);
+app.use('/u', studentRoutes);

@@ -9,8 +9,6 @@ const classUpdateSchema = JOI.object({
     .required(),
   teacherID: JOI.string()
     .required(),
-  studentsID: JOI.array()
-    .required(),
   startTime: JOI.date()
     .required(),
   endTime: JOI.date()
