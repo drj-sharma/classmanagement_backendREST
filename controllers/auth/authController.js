@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-const User = require('../db_models/userModel');
-const { teacherLoginValidator } = require('../validations/teacherLoginValidator');
-const { teacherSignupValidator } = require('../validations/teacherSignupValidator');
+const User = require('../../db_models/userModel');
+const { teacherLoginValidator } = require('../../validations/teacherLoginValidator');
+const { teacherSignupValidator } = require('../../validations/teacherSignupValidator');
 
 /**
  * @param {*} req @body (Login Credentials) for teacher
@@ -172,9 +172,15 @@ const signupStudentPost = async (req, res) => {
     .catch(() => res.status(500).send('Something went wrong!'));
 };
 
+const logout = (req, res) => {
+  res.cookie('accessToken', '', { maxAge: 1 });
+  return res.status(200).send({ result: 'Success' });
+};
+
 module.exports = {
   loginTeacherPost,
   signupTeacherPost,
   loginStudentPost,
-  signupStudentPost
+  signupStudentPost,
+  logout
 };

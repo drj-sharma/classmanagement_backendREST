@@ -17,10 +17,12 @@ app.use(express.urlencoded({
   extended: true,
 }));
 
-const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/auth/authRoutes');
+const classRoutes = require('./routes/teacher/classRoutes');
 
 // db connect and listen for requests
 (() => {
   dbConnect(app);
 })();
 app.use('/auth', authRoutes);
+app.use('/class', classRoutes);
