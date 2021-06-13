@@ -69,6 +69,7 @@ const signupTeacherPost = async (req, res) => {
   user.email = email;
   try {
     user.password = await user.generateHash(password);
+    user.Role = 'teacher';
   } catch (err) {
     res.status(500).send('Something went wrong', err);
   }
@@ -153,6 +154,7 @@ const signupStudentPost = async (req, res) => {
   const user = new User();
   user.username = username;
   user.email = email;
+  user.Role = 'student';
   try {
     user.password = await user.generateHash(password);
   } catch (err) {
